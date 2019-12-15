@@ -4,6 +4,9 @@ import "./App.css";
 import { RootState } from "./global-store/rootReducer";
 import { useGetPosts } from "./post/action";
 import Post from "./post/Post";
+import axios from 'axios'
+
+//axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
 
 const App: React.FC = () => {
   //const [posts, setPosts] = useState<PostData[]>([]);

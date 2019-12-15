@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
 import { useDispatch } from "react-redux";
 import { AnyAction, Dispatch, Reducer } from "redux";
 
@@ -56,15 +56,19 @@ const makeReducerFactory: MRF = apiCallActions => (initialState = oldState) => (
  *
  */
 
+ const c = () => {
+   const oo = axios({})
+ }
+ 
 const callApi = (
-  config: AxiosRequestConfig,
+  axiosCall : AxiosPromise<any>,
   dispatch: Dispatch<AnyAction>,
   apiCallActions: ApiCallActionsTypes
 ) => {
   return async () => {
     dispatch({ type: apiCallActions.request });
     try {
-      const response = await axios({ ...config });
+      const response = await axiosCall;
       dispatch({
         type: apiCallActions.success,
         payload: {
@@ -79,11 +83,11 @@ const callApi = (
 
 type MUR = (
   apiCallActions: ApiCallActionsTypes
-) => (config: AxiosRequestConfig) => () => Promise<void>;
+) => (axiosCall: AxiosPromise<any>) => () => Promise<void>;
 
-const makeUseResource: MUR = apiCallActions => config => {
+const makeUseResource: MUR = apiCallActions => axiosCall => {
   const dispatch = useDispatch<Dispatch<AnyAction>>();
-  return callApi(config, dispatch, apiCallActions);
+  return callApi(axiosCall, dispatch, apiCallActions);
 };
 
 
