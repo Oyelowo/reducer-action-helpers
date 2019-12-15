@@ -1,25 +1,39 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "./App.css";
 import { RootState } from "./global-store/rootReducer";
-import { getPostAction } from "./post/action";
+import { useGetPosts } from "./post/action";
 import Post from "./post/Post";
 
 const App: React.FC = () => {
-  //const [posts, setPosts] = useState<PostProps[]>([]);
-  const { posts } = useSelector((state: RootState) => state.post);
-  const dispatch = useDispatch();
+  //const [posts, setPosts] = useState<PostData[]>([]);
+  const { data: posts, apiCallState } = useSelector(
+    (state: RootState) => state.post
+  );
+  //const dispatch = useDispatch()
+  //const {posts} = useSelector((state: RootState) => state.post);
+  const getPosts = useGetPosts();
 
   useEffect(() => {
-    dispatch(getPostAction());
+    //dispatch(getPostAction());
+    getPosts();
   }, []);
+
+  if (apiCallState === "attempt") {
+    return <div>Loading...</div>;
+  }
+  
+  if (apiCallState === 'failure') {
+    return <div>Something Went Wrong...</div>;
+  }
+
 
   return (
     <div className="App">
       <ul>
         {posts &&
-          posts.map(({ completed, userId, id, title }) => (
-            <Post key={id} title={title} userId={userId} />
+          posts.map(({ userId, title }) => (
+            <Post key={userId} title={title} userId={userId} />
           ))}
       </ul>
     </div>

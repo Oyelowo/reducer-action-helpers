@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 
-export interface PostProps {
+export interface PostData {
   userId: number;
   id?: number;
   title: string;
   completed?: boolean;
 }
 
-const Post: FC<PostProps> = ({ userId, title }) => {
+const Post: FC<PostData> = ({ userId, title }) => {
   return (
     <li>
       {userId} : {title}

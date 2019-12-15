@@ -39,13 +39,13 @@ const makeReducerFactory: MRF = apiCallActions => (initialState = oldState) => (
       return { ...state, apiCallState: "attempt" };
 
     case apiCallActions.success:
-      return { ...state, apiCallState: "success", posts: action.payload.data };
+      return { ...state, apiCallState: "success", data: action.payload.data };
 
     case apiCallActions.failure:
-      return { ...state, apiCallState: "failure", posts: undefined };
+      return { ...state, apiCallState: "failure", data: undefined };
 
     case apiCallActions.deleteData:
-      return { ...state, apiCallState: "idle", posts: undefined };
+      return { ...state, apiCallState: "idle", data: undefined };
 
     default:
       return state;
@@ -83,12 +83,11 @@ type MUR = (
 
 const makeUseResource: MUR = apiCallActions => config => {
   const dispatch = useDispatch<Dispatch<AnyAction>>();
-
   return callApi(config, dispatch, apiCallActions);
 };
 
-type MUDR = (apiCallActions: ApiCallActionsTypes) => () => () => AnyAction;
 
+type MUDR = (apiCallActions: ApiCallActionsTypes) => () => () => AnyAction;
 const makeUseDeleteResource: MUDR = apiCallActions => () => {
   const dispatch = useDispatch<Dispatch<AnyAction>>();
 
@@ -98,10 +97,12 @@ const makeUseDeleteResource: MUDR = apiCallActions => () => {
     });
 };
 
-const reduxApiCallHelper = (type: string) => {
+const reduxApiCallHelper = <ApiActionType extends string>(
+  type: ApiActionType
+) => {
   const actionType = getActionsTypes(type);
   return {
-    useResource: makeReducerFactory(actionType),
+    useResource: makeUseResource(actionType),
     useDeleteResource: makeUseDeleteResource(actionType),
     createReducer: makeReducerFactory(actionType)
   };

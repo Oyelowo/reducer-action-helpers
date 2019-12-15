@@ -1,0 +1,8 @@
+types: old(28) withHelper(0)
+
+reducer:  old(28) withHelper(7)
+
+actionCreator: 17 + 5lines of type declaration for func  old(25) withHelper(7)
+
+
+Total: old(82) withHelper(15)
