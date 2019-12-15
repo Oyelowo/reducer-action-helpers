@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosPromise } from "axios";
+import { AxiosPromise } from "axios";
 import { useDispatch } from "react-redux";
 import { AnyAction, Dispatch, Reducer } from "redux";
 
@@ -56,12 +56,8 @@ const makeReducerFactory: MRF = apiCallActions => (initialState = oldState) => (
  *
  */
 
- const c = () => {
-   const oo = axios({})
- }
- 
 const callApi = (
-  axiosCall : AxiosPromise<any>,
+  axiosCall: AxiosPromise<any>,
   dispatch: Dispatch<AnyAction>,
   apiCallActions: ApiCallActionsTypes
 ) => {
@@ -89,7 +85,6 @@ const makeUseResource: MUR = apiCallActions => axiosCall => {
   const dispatch = useDispatch<Dispatch<AnyAction>>();
   return callApi(axiosCall, dispatch, apiCallActions);
 };
-
 
 type MUDR = (apiCallActions: ApiCallActionsTypes) => () => () => AnyAction;
 const makeUseDeleteResource: MUDR = apiCallActions => () => {
